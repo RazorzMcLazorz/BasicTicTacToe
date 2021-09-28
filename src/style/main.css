@@ -24,9 +24,15 @@ body {
 }
 
 #boardTable {
-  display: 'flex';
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 100vw;
   height: 100vh;
+}
+
+.board {
+  display: grid;
+  column-count: 3;
+  grid-auto-rows: 3;
 }

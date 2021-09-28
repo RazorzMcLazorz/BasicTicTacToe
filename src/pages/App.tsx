@@ -4,24 +4,28 @@ import Tile from '../components/Tile'
 interface IProps {}
 
 interface IState {
-  boardSize: number
+  boardSize: number[]
 }
 
 class App extends React.Component<IProps, IState> {
   state = {
-    boardSize: 3,
+    boardSize: [0,1,2],
   }
   render() {
-    const boardArraySize = Array.from(String(this.state.boardSize), Number)
     return (
       <div id="boardTable">
-        {boardArraySize.map((row: number) => (
-          <>
-            {boardArraySize.map((col: number) => (
-              <Tile tileKey={[row, col]} />
-            ))}
-          </>
-        ))}
+        <div className="board">
+          {this.state.boardSize.map((row: number) => (
+            <>
+              {this.state.boardSize.map((col: number) => {
+                console.log([row, col])
+                return(
+                  <Tile tileKey={[row, col]} />
+                )}
+              )}
+            </>
+          ))}
+        </div>
       </div>
     )
   }
