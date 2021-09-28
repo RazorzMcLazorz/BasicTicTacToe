@@ -25,14 +25,21 @@ body {
 
 #boardTable {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100vw;
   height: 100vh;
+  background-color: dimgray;
 }
 
 .board {
   display: grid;
-  column-count: 3;
-  grid-auto-rows: 3;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: auto;
+}
+
+.currentUser {
+  font-size: 35px;
+  padding: 10px;
 }
