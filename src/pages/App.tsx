@@ -45,6 +45,7 @@ class App extends React.Component<IProps, IState> {
       boardState: {},
       isWinner: undefined,
       validClicks: 0,
+      isTie: false,
     })
   }
 
