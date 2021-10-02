@@ -31,7 +31,7 @@ class Tile extends React.Component<IProps, IState> {
         onMouseOver={this.onHover}
         onMouseOut={this.offHover}
         onClick={this.props.onClick}>
-        {this.props.userTile ? this.props.userTile : this.props.tileKey}
+        {this.props.userTile}
       </div>
     )
   }

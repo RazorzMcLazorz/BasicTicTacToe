@@ -26,8 +26,8 @@ interface IState {
   currentUser: UserType
   boardState: Partial<UserIndex>
   isWinner?: UserType
-  boardUsed: number[]
   isTie: boolean
+  validClicks: number
 }
 
 class App extends React.Component<IProps, IState> {
@@ -35,8 +35,8 @@ class App extends React.Component<IProps, IState> {
     boardSize: [0, 1, 2, 3, 4, 5, 6, 7, 8],
     currentUser: 'X',
     boardState: {},
-    boardUsed: [],
     isTie: false,
+    validClicks: 0,
   }
 
   resetGame = () => {
@@ -44,19 +44,21 @@ class App extends React.Component<IProps, IState> {
       currentUser: 'X',
       boardState: {},
       isWinner: undefined,
-      boardUsed: [],
+      validClicks: 0,
     })
   }
 
-  gameState = (user: UserType, boardState: Partial<UserIndex>, boardUsed: number[]) => {
+  gameState = (user: UserType, boardState: Partial<UserIndex>, validClicks: number) => {
     winningStates.forEach((winningPattern: number[]) => {
       const userWin: boolean = winningPattern
         .map((winningIdx: number) => (boardState[winningIdx] === user ? true : false))
         .every((v) => v === true)
-      console.log(boardUsed.length >= this.state.boardSize.length)
+
+      console.log(validClicks >= this.state.boardSize.length)
+
       if (userWin) {
         this.setState({ isWinner: user })
-      } else if (boardUsed.length >= this.state.boardSize.length) {
+      } else if (validClicks >= this.state.boardSize.length) {
         this.setState({ isTie: true })
       }
     })
@@ -64,16 +66,16 @@ class App extends React.Component<IProps, IState> {
 
   switchUser = (currentUser: UserType) => (currentUser === 'X' ? 'O' : 'X')
 
-  onClick = (index: number, user: UserType) => {
+  onClick = (index: number, user: UserType, validClicks: number) => {
     const boardStateNew = { ...this.state.boardState, [index]: user }
-    const boardUsedNew = { ...this.state.boardUsed, index }
+    const validClicksNew = validClicks + 1
 
     this.setState({
       boardState: boardStateNew,
       currentUser: this.switchUser(user),
-      boardUsed: boardUsedNew,
+      validClicks: validClicksNew,
     })
-    this.gameState(user, boardStateNew, boardUsedNew)
+    this.gameState(user, boardStateNew, validClicksNew)
   }
 
   render() {
@@ -81,14 +83,14 @@ class App extends React.Component<IProps, IState> {
     console.log(this.state.boardState)
     return (
       <div id='boardTable'>
+        <div className='title'>Tic-Tac-Toe</div>
         <div className='currentUser'>
           {this.state.isTie
             ? 'Tie'
             : this.state.isWinner
             ? `Winner is ${this.state.isWinner}`
-            : undefined}
+            : `Current User is ${this.state.currentUser}`}
         </div>
-        <div className='currentUser'>Current User is {this.state.currentUser}</div>
         <div className='board'>
           {this.state.boardSize.map((index: number) => {
             return (
@@ -97,7 +99,7 @@ class App extends React.Component<IProps, IState> {
                 userTile={this.state.boardState[index]}
                 onClick={() => {
                   if (!this.state.boardState[index]) {
-                    this.onClick(index, this.state.currentUser)
+                    this.onClick(index, this.state.currentUser, this.state.validClicks)
                   }
                 }}
               />

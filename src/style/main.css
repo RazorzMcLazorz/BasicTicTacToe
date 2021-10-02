@@ -40,7 +40,14 @@ body {
   grid-auto-rows: auto;
 }
 
+.title {
+  font-size: 65px;
+  margin-bottom: 75px;
+  user-select: none;
+}
+
 .currentUser {
   font-size: 35px;
   padding: 10px;
+  user-select: none;
 }
